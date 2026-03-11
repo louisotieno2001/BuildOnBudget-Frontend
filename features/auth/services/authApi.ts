@@ -15,10 +15,12 @@ export type LoginPayload = {
 export type SignupResponse = {
   message: string;
   user: unknown;
+  token?: string;
 };
 
 export type LoginResponse = {
   message: string;
+  token?: string;
   redirect?: string;
 };
 

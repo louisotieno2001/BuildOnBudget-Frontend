@@ -1,21 +1,155 @@
 import { StyleSheet } from 'react-native';
 
 export const dashboardStyles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f4f1ea',
-    padding: 24,
+    backgroundColor: '#f8f5f0',
+  },
+  container: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 32,
   },
   title: {
     fontSize: 24,
-    fontWeight: '700',
-    color: '#1f2933',
+    fontWeight: '800',
+    color: '#5b21b6',
   },
   subtitle: {
     marginTop: 8,
-    fontSize: 15,
+    fontSize: 14,
     color: '#52606d',
+  },
+  sectionTitle: {
+    marginTop: 20,
+    marginBottom: 12,
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1f2933',
+  },
+  statGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    marginTop: 16,
+  },
+  statCard: {
+    width: '47%',
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 2,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#64748b',
+  },
+  statValue: {
+    marginTop: 6,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#1f2933',
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 14,
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 1,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1f2933',
+  },
+  cardSubtitle: {
+    marginTop: 6,
+    fontSize: 13,
+    color: '#52606d',
+  },
+  pill: {
+    marginTop: 10,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 999,
+    backgroundColor: '#ede9fe',
+  },
+  pillText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#5b21b6',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  actionText: {
+    color: '#6d28d9',
+    fontWeight: '700',
+  },
+  listItem: {
+    borderRadius: 14,
+    padding: 14,
+    backgroundColor: '#f1f5f9',
+    marginBottom: 10,
+  },
+  listItemTitle: {
+    fontWeight: '600',
+    color: '#1f2933',
+  },
+  listItemMeta: {
+    marginTop: 4,
+    color: '#64748b',
+    fontSize: 12,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  notificationCard: {
+    borderRadius: 14,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    backgroundColor: '#ffffff',
+    marginBottom: 12,
+  },
+  notificationPending: {
+    borderColor: '#facc15',
+    backgroundColor: '#fef9c3',
+  },
+  notificationTitle: {
+    fontWeight: '700',
+    color: '#1f2933',
+  },
+  notificationMeta: {
+    marginTop: 4,
+    color: '#475569',
+    fontSize: 12,
+  },
+  primaryButton: {
+    marginTop: 10,
+    backgroundColor: '#7c3aed',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    alignSelf: 'flex-start',
+  },
+  primaryButtonText: {
+    color: '#ffffff',
+    fontWeight: '700',
+    fontSize: 13,
   },
 });

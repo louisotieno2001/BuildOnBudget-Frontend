@@ -13,6 +13,8 @@ import { Link } from 'expo-router';
 
 import CustomToast, { ToastType } from '@/components/CustomToast';
 import { ApiError } from '@/services/api';
+import { saveAuthToken } from '@/services/authToken';
+import { saveUserSession, UserSession } from '@/services/userSession';
 import { signup } from '@/features/auth/services/authApi';
 import { signupStyles } from '@/features/auth/styles/signupStyles';
 
@@ -47,6 +49,14 @@ export default function SignupScreen() {
         phone: phone.trim(),
         password,
       });
+      if (result.token) {
+        await saveAuthToken(result.token);
+      }
+      const userPayload = result.user as { data?: UserSession } | UserSession;
+      const user = userPayload && 'data' in userPayload ? userPayload.data : userPayload;
+      if (user) {
+        await saveUserSession(user);
+      }
       showToast(result.message ?? 'Account created successfully.', 'success');
     } catch (error) {
       if (error instanceof ApiError) {

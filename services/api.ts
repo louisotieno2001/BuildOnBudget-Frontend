@@ -17,6 +17,16 @@ export class ApiError extends Error {
   }
 }
 
+let authToken: string | null = null;
+
+export function setAuthToken(token: string | null) {
+  authToken = token;
+}
+
+export function getAuthToken() {
+  return authToken;
+}
+
 const apiUrlFromConfig =
   Constants.expoConfig?.extra?.apiUrl ??
   Constants.manifest?.extra?.apiUrl ??
@@ -39,6 +49,7 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   const headers = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
     ...(options.headers ?? {}),
   };
 

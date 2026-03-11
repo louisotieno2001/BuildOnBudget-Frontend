@@ -13,6 +13,8 @@ import { Link, useRouter } from 'expo-router';
 
 import CustomToast, { ToastType } from '@/components/CustomToast';
 import { ApiError } from '@/services/api';
+import { saveAuthToken } from '@/services/authToken';
+import { saveUserSession, UserSession } from '@/services/userSession';
 import { login } from '@/features/auth/services/authApi';
 import { loginStyles } from '@/features/auth/styles/loginStyles';
 
@@ -41,6 +43,13 @@ export default function LoginScreen() {
     setSubmitting(true);
     try {
       const result = await login({ email: email.trim(), password });
+      if (result.token) {
+        await saveAuthToken(result.token);
+      }
+      const user = (result as { user?: UserSession }).user;
+      if (user) {
+        await saveUserSession(user);
+      }
       showToast(result.message ?? 'Login successful.', 'success');
       router.replace('/dashboard');
     } catch (error) {
