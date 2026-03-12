@@ -1,10 +1,28 @@
 import { StyleSheet } from 'react-native';
+import { useMemo } from 'react';
 
-export const dashboardStyles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#f8f5f0',
-  },
+import { useTheme } from '@/context/theme';
+
+type ThemeColors = {
+  background: string;
+  surface: string;
+  surfaceAlt: string;
+  primary: string;
+  primaryStrong: string;
+  accent: string;
+  text: string;
+  textMuted: string;
+  border: string;
+  dangerBg: string;
+  dangerText: string;
+};
+
+export const createDashboardStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
   container: {
     paddingHorizontal: 20,
     paddingTop: 24,
@@ -13,12 +31,12 @@ export const dashboardStyles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#5b21b6',
+    color: colors.primary,
   },
   subtitle: {
     marginTop: 8,
     fontSize: 14,
-    color: '#52606d',
+    color: colors.textMuted,
     marginBottom: 16,
   },
   sectionTitle: {
@@ -26,7 +44,7 @@ export const dashboardStyles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 18,
     fontWeight: '700',
-    color: '#1f2933',
+    color: colors.text,
   },
   statGrid: {
     flexDirection: 'row',
@@ -36,7 +54,7 @@ export const dashboardStyles = StyleSheet.create({
   },
   statCard: {
     width: '47%',
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: 16,
     shadowColor: '#0f172a',
@@ -47,16 +65,16 @@ export const dashboardStyles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#64748b',
+    color: colors.textMuted,
   },
   statValue: {
     marginTop: 6,
     fontSize: 20,
     fontWeight: '700',
-    color: '#1f2933',
+    color: colors.text,
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -69,12 +87,12 @@ export const dashboardStyles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1f2933',
+    color: colors.text,
   },
   cardSubtitle: {
     marginTop: 6,
     fontSize: 13,
-    color: '#52606d',
+    color: colors.textMuted,
   },
   pill: {
     marginTop: 10,
@@ -82,12 +100,12 @@ export const dashboardStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 999,
-    backgroundColor: '#ede9fe',
+    backgroundColor: colors.surfaceAlt,
   },
   pillText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#5b21b6',
+    color: colors.primary,
   },
   row: {
     flexDirection: 'row',
@@ -111,7 +129,7 @@ export const dashboardStyles = StyleSheet.create({
     gap: 10,
   },
   backButton: {
-    backgroundColor: '#7c3aed',
+    backgroundColor: colors.accent,
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -119,14 +137,14 @@ export const dashboardStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   actionText: {
-    color: '#6d28d9',
+    color: colors.primaryStrong,
     fontWeight: '700',
   },
   iconButton: {
     width: 42,
     height: 42,
     borderRadius: 14,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#0f172a',
@@ -150,21 +168,21 @@ export const dashboardStyles = StyleSheet.create({
   cartBadgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#4c1d95',
+    color: colors.primary,
   },
   listItem: {
     borderRadius: 14,
     padding: 14,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceAlt,
     marginBottom: 10,
   },
   listItemTitle: {
     fontWeight: '600',
-    color: '#1f2933',
+    color: colors.text,
   },
   listItemMeta: {
     marginTop: 4,
-    color: '#64748b',
+    color: colors.textMuted,
     fontSize: 12,
   },
   switchRow: {
@@ -177,8 +195,8 @@ export const dashboardStyles = StyleSheet.create({
     borderRadius: 14,
     padding: 14,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
-    backgroundColor: '#ffffff',
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
     marginBottom: 12,
   },
   notificationPending: {
@@ -187,16 +205,16 @@ export const dashboardStyles = StyleSheet.create({
   },
   notificationTitle: {
     fontWeight: '700',
-    color: '#1f2933',
+    color: colors.text,
   },
   notificationMeta: {
     marginTop: 4,
-    color: '#475569',
+    color: colors.textMuted,
     fontSize: 12,
   },
   primaryButton: {
     marginTop: 10,
-    backgroundColor: '#7c3aed',
+    backgroundColor: colors.accent,
     paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 10,
@@ -208,7 +226,7 @@ export const dashboardStyles = StyleSheet.create({
     fontSize: 13,
   },
   chartCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -223,7 +241,7 @@ export const dashboardStyles = StyleSheet.create({
     height: 16,
     borderRadius: 999,
     overflow: 'hidden',
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.border,
   },
   chartSegment: {
     height: '100%',
@@ -255,15 +273,15 @@ export const dashboardStyles = StyleSheet.create({
   },
   legendText: {
     fontSize: 12,
-    color: '#475569',
+    color: colors.textMuted,
   },
   chartEmptyText: {
-    color: '#64748b',
+    color: colors.textMuted,
     fontSize: 13,
   },
   errorText: {
     marginTop: 10,
-    color: '#b91c1c',
+    color: colors.dangerText,
     fontSize: 12,
   },
   detailRow: {
@@ -278,18 +296,18 @@ export const dashboardStyles = StyleSheet.create({
   detailLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#64748b',
+    color: colors.textMuted,
     textTransform: 'uppercase',
   },
   detailValue: {
     flex: 1,
     textAlign: 'right',
     fontSize: 14,
-    color: '#1f2933',
+    color: colors.text,
   },
   detailValueBlock: {
     fontSize: 14,
-    color: '#1f2933',
+    color: colors.text,
   },
   taskActions: {
     flexDirection: 'row',
@@ -316,11 +334,12 @@ export const dashboardStyles = StyleSheet.create({
   searchInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
+    color: colors.text,
   },
   chipRow: {
     marginBottom: 10,
@@ -329,16 +348,16 @@ export const dashboardStyles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 999,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceAlt,
     marginRight: 8,
   },
   chipActive: {
-    backgroundColor: '#7c3aed',
+    backgroundColor: colors.accent,
   },
   chipText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#475569',
+    color: colors.textMuted,
   },
   chipTextActive: {
     color: '#ffffff',
@@ -350,7 +369,7 @@ export const dashboardStyles = StyleSheet.create({
   },
   productCard: {
     width: '48%',
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 18,
     padding: 12,
     marginBottom: 14,
@@ -365,29 +384,29 @@ export const dashboardStyles = StyleSheet.create({
     height: 120,
     borderRadius: 14,
     marginBottom: 10,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceAlt,
   },
   productImageFallback: {
     width: '100%',
     height: 110,
     borderRadius: 12,
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.border,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
   productImageFallbackText: {
     fontSize: 11,
-    color: '#64748b',
+    color: colors.textMuted,
   },
   productPrice: {
     marginTop: 8,
     fontWeight: '700',
-    color: '#5b21b6',
+    color: colors.primary,
   },
   productButton: {
     marginTop: 8,
-    backgroundColor: '#0f172a',
+    backgroundColor: colors.primaryStrong,
     paddingVertical: 8,
     borderRadius: 12,
     alignItems: 'center',
@@ -406,13 +425,13 @@ export const dashboardStyles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 12,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceAlt,
   },
   cartItemImageFallback: {
     width: 64,
     height: 64,
     borderRadius: 12,
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -434,33 +453,33 @@ export const dashboardStyles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#ede9fe',
+    backgroundColor: colors.surfaceAlt,
     alignItems: 'center',
     justifyContent: 'center',
   },
   qtyButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#5b21b6',
+    color: colors.primary,
   },
   qtyValue: {
     fontWeight: '700',
-    color: '#1f2933',
+    color: colors.text,
   },
   removeButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    backgroundColor: '#fee2e2',
+    backgroundColor: colors.dangerBg,
   },
   removeButtonText: {
-    color: '#b91c1c',
+    color: colors.dangerText,
     fontWeight: '700',
     fontSize: 12,
   },
   noticeText: {
     marginTop: 10,
-    color: '#166534',
+    color: '#16a34a',
     fontSize: 12,
   },
   modalBackdrop: {
@@ -469,7 +488,7 @@ export const dashboardStyles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
@@ -485,14 +504,14 @@ export const dashboardStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#0f172a',
+    color: colors.text,
   },
   modalSectionTitle: {
     marginTop: 12,
     marginBottom: 8,
     fontSize: 13,
     fontWeight: '700',
-    color: '#475569',
+    color: colors.textMuted,
     textTransform: 'uppercase',
   },
   modalChipRow: {
@@ -510,17 +529,17 @@ export const dashboardStyles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     paddingVertical: 10,
     alignItems: 'center',
   },
   modalActionPrimary: {
-    backgroundColor: '#0f172a',
-    borderColor: '#0f172a',
+    backgroundColor: colors.primaryStrong,
+    borderColor: colors.primaryStrong,
   },
   modalActionText: {
     fontWeight: '700',
-    color: '#0f172a',
+    color: colors.text,
   },
   modalActionPrimaryText: {
     fontWeight: '700',
@@ -537,7 +556,7 @@ export const dashboardStyles = StyleSheet.create({
     marginBottom: 12,
   },
   formCard: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: 16,
     marginTop: 16,
@@ -550,20 +569,20 @@ export const dashboardStyles = StyleSheet.create({
   formLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#64748b',
+    color: colors.textMuted,
     textTransform: 'uppercase',
     marginBottom: 6,
     marginTop: 12,
   },
   formInput: {
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     fontSize: 14,
-    color: '#0f172a',
+    color: colors.text,
   },
   formTextArea: {
     minHeight: 90,
@@ -576,19 +595,19 @@ export const dashboardStyles = StyleSheet.create({
   },
   optionItem: {
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceAlt,
   },
   optionItemSelected: {
-    borderColor: '#6d28d9',
-    backgroundColor: '#ede9fe',
+    borderColor: colors.accent,
+    backgroundColor: colors.surfaceAlt,
   },
   optionText: {
     fontSize: 12,
-    color: '#1f2933',
+    color: colors.text,
     fontWeight: '600',
   },
   buttonDisabled: {
@@ -609,9 +628,9 @@ export const dashboardStyles = StyleSheet.create({
     marginTop: 12,
     padding: 12,
     borderRadius: 12,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceAlt,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
   },
   balanceGood: {
     color: '#16a34a',
@@ -626,7 +645,7 @@ export const dashboardStyles = StyleSheet.create({
     marginTop: 10,
     height: 8,
     borderRadius: 999,
-    backgroundColor: '#e2e8f0',
+    backgroundColor: colors.border,
     overflow: 'hidden',
   },
   progressFill: {
@@ -634,3 +653,8 @@ export const dashboardStyles = StyleSheet.create({
     backgroundColor: '#ec4899',
   },
 });
+
+export function useDashboardStyles() {
+  const { colors } = useTheme();
+  return useMemo(() => createDashboardStyles(colors), [colors]);
+}

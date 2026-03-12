@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -16,9 +16,12 @@ import { ApiError } from '@/services/api';
 import { saveAuthToken } from '@/services/authToken';
 import { saveUserSession, UserSession } from '@/services/userSession';
 import { signup } from '@/features/auth/services/authApi';
-import { signupStyles } from '@/features/auth/styles/signupStyles';
+import { useTheme } from '@/context/theme';
+import { createSignupStyles } from '@/features/auth/styles/signupStyles';
 
 export default function SignupScreen() {
+  const { colors } = useTheme();
+  const signupStyles = useMemo(() => createSignupStyles(colors), [colors]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -93,6 +96,7 @@ export default function SignupScreen() {
               <TextInput
                 style={signupStyles.input}
                 placeholder="Jane Doe"
+                placeholderTextColor={colors.textMuted}
                 textContentType="name"
                 value={name}
                 onChangeText={setName}
@@ -104,6 +108,7 @@ export default function SignupScreen() {
               <TextInput
                 style={signupStyles.input}
                 placeholder="you@email.com"
+                placeholderTextColor={colors.textMuted}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -117,6 +122,7 @@ export default function SignupScreen() {
               <TextInput
                 style={signupStyles.input}
                 placeholder="07xx xxx xxx"
+                placeholderTextColor={colors.textMuted}
                 keyboardType="phone-pad"
                 textContentType="telephoneNumber"
                 value={phone}
@@ -130,6 +136,7 @@ export default function SignupScreen() {
                 <TextInput
                   style={[signupStyles.input, signupStyles.inputFlex]}
                   placeholder="Create a password"
+                  placeholderTextColor={colors.textMuted}
                   secureTextEntry={!passwordVisible}
                   textContentType="newPassword"
                   value={password}

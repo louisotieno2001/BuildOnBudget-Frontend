@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import {
   ActivityIndicator,
   Alert,
@@ -11,7 +13,7 @@ import {
 import { useRouter } from 'expo-router';
 
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectOption = {
   id: string | number;
@@ -24,6 +26,8 @@ type BudgetComponent = {
 };
 
 export default function NewBudgetScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
@@ -130,7 +134,7 @@ export default function NewBudgetScreen() {
       <View style={dashboardStyles.formCard}>
         <Text style={dashboardStyles.formLabel}>Select Project</Text>
         {loadingProjects ? (
-          <ActivityIndicator color="#6d28d9" />
+          <ActivityIndicator color={colors.accent} />
         ) : projects.length === 0 ? (
           <Text style={dashboardStyles.chartEmptyText}>No projects available.</Text>
         ) : (
@@ -154,6 +158,7 @@ export default function NewBudgetScreen() {
         <TextInput
           style={dashboardStyles.formInput}
           placeholder="Enter total budget"
+          placeholderTextColor={colors.textMuted}
           keyboardType="numeric"
           value={totalBudget}
           onChangeText={setTotalBudget}
@@ -165,12 +170,14 @@ export default function NewBudgetScreen() {
             <TextInput
               style={[dashboardStyles.formInput, dashboardStyles.componentInput]}
               placeholder="Component name"
+              placeholderTextColor={colors.textMuted}
               value={component.name}
               onChangeText={(value) => updateComponent(index, 'name', value)}
             />
             <TextInput
               style={[dashboardStyles.formInput, dashboardStyles.componentInput]}
               placeholder="Cost"
+              placeholderTextColor={colors.textMuted}
               keyboardType="numeric"
               value={component.cost}
               onChangeText={(value) => updateComponent(index, 'cost', value)}

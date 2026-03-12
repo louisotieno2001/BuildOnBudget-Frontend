@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 
 import { apiFetch, getApiUrl } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectDetails = {
   id: string | number;
@@ -38,6 +40,8 @@ type ProjectDetails = {
 };
 
 export default function ProjectDetailsScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const [project, setProject] = useState<ProjectDetails | null>(null);
@@ -184,7 +188,7 @@ export default function ProjectDetailsScreen() {
       </Pressable>
 
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : !project ? (
         <Text style={dashboardStyles.chartEmptyText}>Project not found.</Text>
       ) : (

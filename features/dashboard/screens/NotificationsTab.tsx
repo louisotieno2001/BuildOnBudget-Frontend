@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 const notifications = [
   {
@@ -19,6 +19,7 @@ const notifications = [
 ];
 
 export default function NotificationsTab() {
+  const dashboardStyles = useDashboardStyles();
   return (
     <ScrollView style={dashboardStyles.screen} contentContainerStyle={dashboardStyles.container}>
       <Text style={dashboardStyles.title}>Notifications</Text>

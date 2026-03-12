@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import {
   ActivityIndicator,
   Alert,
@@ -11,7 +13,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectOption = {
   id: string | number;
@@ -26,6 +28,8 @@ type BudgetRecord = {
 };
 
 export default function EditBudgetScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
@@ -153,7 +157,7 @@ export default function EditBudgetScreen() {
 
       <View style={dashboardStyles.formCard}>
         {loading ? (
-          <ActivityIndicator color="#6d28d9" />
+          <ActivityIndicator color={colors.accent} />
         ) : (
           <>
             <Text style={dashboardStyles.formLabel}>Select Project</Text>
@@ -176,6 +180,7 @@ export default function EditBudgetScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="Enter total budget"
+              placeholderTextColor={colors.textMuted}
               keyboardType="numeric"
               value={totalBudget}
               onChangeText={setTotalBudget}
@@ -185,6 +190,7 @@ export default function EditBudgetScreen() {
             <TextInput
               style={[dashboardStyles.formInput, dashboardStyles.formTextArea]}
               placeholder='[{"name":"Materials","cost":2000},{"name":"Labor","cost":3000}]'
+              placeholderTextColor={colors.textMuted}
               value={componentsJson}
               onChangeText={setComponentsJson}
               multiline

@@ -4,20 +4,19 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useEffect } from 'react';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { AppThemeProvider, useTheme } from '@/context/theme';
 import { initAuthToken } from '@/services/authToken';
 import { initUserSession } from '@/services/userSession';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+function RootLayoutContent() {
+  const { isDark } = useTheme();
   useEffect(() => {
     void initAuthToken();
     void initUserSession();
   }, []);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={isDark ? DarkTheme : DefaultTheme}>
       <Stack initialRouteName="splash">
         <Stack.Screen name="splash" options={{ headerShown: false }} />
         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -27,7 +26,15 @@ export default function RootLayout() {
         <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
         <Stack.Screen name="cart" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
     </ThemeProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AppThemeProvider>
+      <RootLayoutContent />
+    </AppThemeProvider>
   );
 }

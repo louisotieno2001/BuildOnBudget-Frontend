@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 
+import { useTheme } from '@/context/theme';
 import { getUserSession } from '@/services/userSession';
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectSummary = {
   id: string | number;
@@ -45,6 +46,8 @@ type DashboardHomeResponse = {
 };
 
 export default function DashboardHome() {
+  const { colors } = useTheme();
+  const dashboardStyles = useDashboardStyles();
   const user = getUserSession();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,7 +148,7 @@ export default function DashboardHome() {
       <Text style={[dashboardStyles.sectionTitle, { marginTop: 24 }]}>Task Progress</Text>
       <View style={dashboardStyles.chartCard}>
         {loading ? (
-          <ActivityIndicator color="#6d28d9" />
+          <ActivityIndicator color={colors.accent} />
         ) : totalTasks === 0 ? (
           <Text style={dashboardStyles.chartEmptyText}>No tasks yet.</Text>
         ) : (
@@ -183,7 +186,7 @@ export default function DashboardHome() {
       {/* Projects */}
       <Text style={[dashboardStyles.sectionTitle, { marginTop: 24 }]}>Your Projects</Text>
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : projects.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No projects found.</Text>
       ) : (
@@ -205,7 +208,7 @@ export default function DashboardHome() {
       {/* Project Completion */}
       <Text style={[dashboardStyles.sectionTitle, { marginTop: 24 }]}>Project Completion</Text>
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : allProjectsForProgress.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No projects yet.</Text>
       ) : (

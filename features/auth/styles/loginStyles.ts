@@ -1,10 +1,23 @@
 import { StyleSheet } from 'react-native';
 
-export const loginStyles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: '#f8f5f0',
-  },
+type ThemeColors = {
+  background: string;
+  surface: string;
+  surfaceAlt: string;
+  primary: string;
+  primaryStrong: string;
+  accent: string;
+  text: string;
+  textMuted: string;
+  border: string;
+};
+
+export const createLoginStyles = (colors: ThemeColors) =>
+  StyleSheet.create({
+    screen: {
+      flex: 1,
+      backgroundColor: colors.background,
+    },
   content: {
     flexGrow: 1,
     paddingHorizontal: 24,
@@ -18,17 +31,17 @@ export const loginStyles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#5b21b6',
+    color: colors.primary,
     textAlign: 'center',
   },
   subtitle: {
     marginTop: 8,
     fontSize: 15,
-    color: '#52606d',
+    color: colors.textMuted,
     textAlign: 'center',
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 18,
     padding: 22,
     maxWidth: 420,
@@ -46,18 +59,18 @@ export const loginStyles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#334e68',
+    color: colors.text,
     marginBottom: 6,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd6fe',
+    borderColor: colors.border,
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 15,
-    color: '#1f2933',
-    backgroundColor: '#f5f3ff',
+    color: colors.text,
+    backgroundColor: colors.surfaceAlt,
   },
   inputRow: {
     flexDirection: 'row',
@@ -71,15 +84,15 @@ export const loginStyles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: '#ede9fe',
+    backgroundColor: colors.surfaceAlt,
   },
   toggleButtonText: {
-    color: '#5b21b6',
+    color: colors.primary,
     fontWeight: '700',
     fontSize: 13,
   },
   button: {
-    backgroundColor: '#7c3aed',
+    backgroundColor: colors.accent,
     borderRadius: 14,
     paddingVertical: 12,
     alignItems: 'center',
@@ -100,11 +113,11 @@ export const loginStyles = StyleSheet.create({
     alignItems: 'center',
   },
   helperText: {
-    color: '#52606d',
+    color: colors.textMuted,
     fontSize: 14,
   },
   helperAction: {
-    color: '#7c3aed',
+    color: colors.accent,
     fontWeight: '700',
     marginLeft: 6,
   },

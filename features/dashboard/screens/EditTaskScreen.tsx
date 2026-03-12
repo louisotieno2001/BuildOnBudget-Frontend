@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import {
   ActivityIndicator,
   Alert,
@@ -11,7 +13,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectOption = {
   id: string | number;
@@ -31,6 +33,8 @@ type TaskRecord = {
 };
 
 export default function EditTaskScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
@@ -146,7 +150,7 @@ export default function EditTaskScreen() {
 
       <View style={dashboardStyles.formCard}>
         {loading ? (
-          <ActivityIndicator color="#6d28d9" />
+          <ActivityIndicator color={colors.accent} />
         ) : (
           <>
             <Text style={dashboardStyles.formLabel}>Select Project</Text>
@@ -169,6 +173,7 @@ export default function EditTaskScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="e.g., Foundation Excavation"
+              placeholderTextColor={colors.textMuted}
               value={name}
               onChangeText={setName}
             />
@@ -177,6 +182,7 @@ export default function EditTaskScreen() {
             <TextInput
               style={[dashboardStyles.formInput, dashboardStyles.formTextArea]}
               placeholder="Detailed description of the task..."
+              placeholderTextColor={colors.textMuted}
               value={description}
               onChangeText={setDescription}
               multiline
@@ -186,6 +192,7 @@ export default function EditTaskScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="Name or team member"
+              placeholderTextColor={colors.textMuted}
               value={assignedTo}
               onChangeText={setAssignedTo}
             />
@@ -226,6 +233,7 @@ export default function EditTaskScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="2026-03-11"
+              placeholderTextColor={colors.textMuted}
               value={startDate}
               onChangeText={setStartDate}
             />
@@ -234,6 +242,7 @@ export default function EditTaskScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="2026-04-15"
+              placeholderTextColor={colors.textMuted}
               value={endDate}
               onChangeText={setEndDate}
             />

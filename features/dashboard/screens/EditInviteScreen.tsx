@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import {
   ActivityIndicator,
   Alert,
@@ -11,7 +13,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectOption = {
   id: string | number;
@@ -42,6 +44,8 @@ const roles = [
 const statuses = ['pending', 'accepted', 'cancelled'] as const;
 
 export default function EditInviteScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
@@ -138,7 +142,7 @@ export default function EditInviteScreen() {
 
       <View style={dashboardStyles.formCard}>
         {loading ? (
-          <ActivityIndicator color="#6d28d9" />
+          <ActivityIndicator color={colors.accent} />
         ) : (
           <>
             <Text style={dashboardStyles.formLabel}>Select Project</Text>
@@ -161,6 +165,7 @@ export default function EditInviteScreen() {
             <TextInput
               style={dashboardStyles.formInput}
               placeholder="user@example.com"
+              placeholderTextColor={colors.textMuted}
               keyboardType="email-address"
               autoCapitalize="none"
               value={email}

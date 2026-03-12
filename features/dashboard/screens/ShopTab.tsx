@@ -3,7 +3,8 @@ import { ActivityIndicator, Image, Modal, Pressable, ScrollView, Text, TextInput
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useTheme } from '@/context/theme';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 import { apiFetch } from '@/services/api';
 import { getMediaAssetUrl } from '@/services/media';
 
@@ -24,6 +25,8 @@ type ShopResponse = {
 };
 
 export default function ShopTab() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [items, setItems] = useState<ShopItem[]>([]);
   const [cartCount, setCartCount] = useState(0);
@@ -163,16 +166,17 @@ export default function ShopTab() {
       <View style={dashboardStyles.shopHeader}>
         <TextInput
           placeholder="Search materials..."
+          placeholderTextColor={colors.textMuted}
           value={search}
           onChangeText={setSearch}
           style={dashboardStyles.searchInput}
         />
         <View style={dashboardStyles.shopHeaderActions}>
           <Pressable style={dashboardStyles.iconButton} onPress={() => setFiltersOpen(true)}>
-            <Ionicons name="filter" size={20} color="#7c3aed" />
+            <Ionicons name="filter" size={20} color={colors.accent} />
           </Pressable>
           <Pressable style={dashboardStyles.iconButton} onPress={() => router.push('/cart')}>
-            <Ionicons name="cart" size={20} color="#7c3aed" />
+            <Ionicons name="cart" size={20} color={colors.accent} />
             {cartCount > 0 && (
               <View style={dashboardStyles.cartBadge}>
                 <Text style={dashboardStyles.cartBadgeText}>{cartCount}</Text>
@@ -183,7 +187,7 @@ export default function ShopTab() {
       </View>
 
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : filteredItems.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>
           {items.length === 0 ? 'No items available yet.' : 'No matches for your filters.'}

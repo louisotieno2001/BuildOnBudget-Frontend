@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -16,10 +16,13 @@ import { ApiError } from '@/services/api';
 import { saveAuthToken } from '@/services/authToken';
 import { saveUserSession, UserSession } from '@/services/userSession';
 import { login } from '@/features/auth/services/authApi';
-import { loginStyles } from '@/features/auth/styles/loginStyles';
+import { useTheme } from '@/context/theme';
+import { createLoginStyles } from '@/features/auth/styles/loginStyles';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { colors } = useTheme();
+  const loginStyles = useMemo(() => createLoginStyles(colors), [colors]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -87,6 +90,7 @@ export default function LoginScreen() {
               <TextInput
                 style={loginStyles.input}
                 placeholder="you@email.com"
+                placeholderTextColor={colors.textMuted}
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -101,6 +105,7 @@ export default function LoginScreen() {
                 <TextInput
                   style={[loginStyles.input, loginStyles.inputFlex]}
                   placeholder="••••••••"
+                  placeholderTextColor={colors.textMuted}
                   secureTextEntry={!passwordVisible}
                   textContentType="password"
                   value={password}

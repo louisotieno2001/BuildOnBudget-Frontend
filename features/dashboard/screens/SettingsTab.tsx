@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ScrollView, Switch, Text, TextInput, View } from 'react-native';
 
+import { useTheme } from '@/context/theme';
 import { getUserSession } from '@/services/userSession';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 export default function SettingsTab() {
+  const dashboardStyles = useDashboardStyles();
+  const { isDark, setTheme } = useTheme();
   const user = getUserSession();
-  const [darkMode, setDarkMode] = useState(false);
   const [emailAlerts, setEmailAlerts] = useState(true);
 
   return (
@@ -40,7 +42,7 @@ export default function SettingsTab() {
       <View style={dashboardStyles.card}>
         <View style={dashboardStyles.switchRow}>
           <Text style={dashboardStyles.cardTitle}>Dark theme</Text>
-          <Switch value={darkMode} onValueChange={setDarkMode} />
+          <Switch value={isDark} onValueChange={(value) => setTheme(value ? 'dark' : 'light')} />
         </View>
         <View style={dashboardStyles.switchRow}>
           <Text style={dashboardStyles.cardTitle}>Email alerts</Text>

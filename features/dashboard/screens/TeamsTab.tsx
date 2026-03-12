@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 import { apiFetch } from '@/services/api';
 
 export default function TeamsTab() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [teamsByYou, setTeamsByYou] = useState<{
     id: string | number;
@@ -98,7 +102,7 @@ export default function TeamsTab() {
 
       <Text style={dashboardStyles.sectionTitle}>Teams by You</Text>
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : teamsByYou.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No team members yet.</Text>
       ) : (

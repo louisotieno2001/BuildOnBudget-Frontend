@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { apiFetch } from '@/services/api';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type ProjectTasks = {
   id: string | number;
@@ -12,6 +14,8 @@ type ProjectTasks = {
 };
 
 export default function TasksTab() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [openProject, setOpenProject] = useState<string | null>(null);
   const [projects, setProjects] = useState<ProjectTasks[]>([]);
@@ -106,7 +110,7 @@ export default function TasksTab() {
       </View>
 
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : projects.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No tasks yet.</Text>
       ) : (

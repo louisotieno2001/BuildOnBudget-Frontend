@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+
+import { useTheme } from '@/context/theme';
 import { ActivityIndicator, Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 import { apiFetch } from '@/services/api';
 
 export default function BudgetTab() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [budgets, setBudgets] = useState<Array<{
     id: string | number;
@@ -81,7 +85,7 @@ export default function BudgetTab() {
       </View>
 
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : budgets.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No budgets found.</Text>
       ) : (

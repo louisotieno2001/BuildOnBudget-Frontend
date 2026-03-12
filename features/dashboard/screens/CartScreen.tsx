@@ -3,9 +3,10 @@ import { ActivityIndicator, Image, Pressable, ScrollView, Text, TextInput, View 
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
+import { useTheme } from '@/context/theme';
 import { apiFetch } from '@/services/api';
 import { getMediaAssetUrl } from '@/services/media';
-import { dashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
+import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
 
 type CartItem = {
   id: string | number;
@@ -42,6 +43,8 @@ type CartResponse = {
 };
 
 export default function CartScreen() {
+  const dashboardStyles = useDashboardStyles();
+  const { colors } = useTheme();
   const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [ongoingOrders, setOngoingOrders] = useState<PurchaseOrder[]>([]);
@@ -166,7 +169,7 @@ export default function CartScreen() {
       </View>
 
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : cartItems.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>Your cart is empty.</Text>
       ) : (
@@ -232,6 +235,7 @@ export default function CartScreen() {
               onChangeText={setPhone}
               placeholder="+254 7xxxxxxxx"
               keyboardType="phone-pad"
+              placeholderTextColor={colors.textMuted}
             />
             <Pressable style={dashboardStyles.primaryButton} onPress={handleCheckout}>
               <Text style={dashboardStyles.primaryButtonText}>Checkout</Text>
@@ -242,7 +246,7 @@ export default function CartScreen() {
 
       <Text style={dashboardStyles.sectionTitle}>Previous Purchases</Text>
       {loading ? (
-        <ActivityIndicator color="#6d28d9" />
+        <ActivityIndicator color={colors.accent} />
       ) : ongoingOrders.length === 0 && deliveredOrders.length === 0 ? (
         <Text style={dashboardStyles.chartEmptyText}>No previous purchases yet.</Text>
       ) : (

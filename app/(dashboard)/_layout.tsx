@@ -2,11 +2,10 @@ import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTheme } from '@/context/theme';
 
 export default function DashboardTabsLayout() {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const { isDark, colors } = useTheme();
 
   return (
     <>
@@ -14,15 +13,15 @@ export default function DashboardTabsLayout() {
         screenOptions={({ route }) => ({
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: isDark ? '#0f172a' : '#ffffff',
-            borderTopColor: isDark ? '#1f2937' : '#e2e8f0',
+            backgroundColor: colors.background,
+            borderTopColor: colors.border,
             height: 62,
             paddingBottom: 8,
             paddingTop: 8,
             marginBottom: 0,
           },
-          tabBarActiveTintColor: isDark ? '#c4b5fd' : '#6d28d9',
-          tabBarInactiveTintColor: isDark ? '#94a3b8' : '#64748b',
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: colors.textMuted,
           tabBarIcon: ({ color, size }) => {
             const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
               index: 'home',

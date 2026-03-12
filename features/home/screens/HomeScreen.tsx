@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { Linking, Pressable, ScrollView, Text, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Alert, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-import { homeStyles } from '@/features/home/styles/homeStyles';
+import { useTheme } from '@/context/theme';
+import { createHomeStyles } from '@/features/home/styles/homeStyles';
 
 export default function HomeScreen() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { colors } = useTheme();
+  const homeStyles = useMemo(() => createHomeStyles(colors), [colors]);
 
   return (
     <View style={homeStyles.screen}>
@@ -16,7 +20,7 @@ export default function HomeScreen() {
             <Link href="/about" asChild>
               <Pressable style={homeStyles.drawerItem} onPress={() => setDrawerOpen(false)}>
                 <View style={homeStyles.drawerIcon}>
-                  <Text style={homeStyles.drawerIconText}>AB</Text>
+                  <Ionicons name="information-circle" size={18} color={colors.icon} />
                 </View>
                 <Text style={homeStyles.drawerItemText}>About</Text>
               </Pressable>
@@ -24,7 +28,7 @@ export default function HomeScreen() {
             <Link href="/settings" asChild>
               <Pressable style={homeStyles.drawerItem} onPress={() => setDrawerOpen(false)}>
                 <View style={homeStyles.drawerIcon}>
-                  <Text style={homeStyles.drawerIconText}>ST</Text>
+                  <Ionicons name="settings" size={18} color={colors.icon} />
                 </View>
                 <Text style={homeStyles.drawerItemText}>Settings</Text>
               </Pressable>
@@ -32,7 +36,7 @@ export default function HomeScreen() {
             <Link href="/privacy" asChild>
               <Pressable style={homeStyles.drawerItem} onPress={() => setDrawerOpen(false)}>
                 <View style={homeStyles.drawerIcon}>
-                  <Text style={homeStyles.drawerIconText}>PP</Text>
+                  <Ionicons name="shield-checkmark" size={18} color={colors.icon} />
                 </View>
                 <Text style={homeStyles.drawerItemText}>Privacy Policy</Text>
               </Pressable>
@@ -40,7 +44,7 @@ export default function HomeScreen() {
             <Link href="/terms" asChild>
               <Pressable style={homeStyles.drawerItem} onPress={() => setDrawerOpen(false)}>
                 <View style={homeStyles.drawerIcon}>
-                  <Text style={homeStyles.drawerIconText}>TS</Text>
+                  <Ionicons name="document-text" size={18} color={colors.icon} />
                 </View>
                 <Text style={homeStyles.drawerItemText}>Terms of Service</Text>
               </Pressable>
@@ -50,13 +54,23 @@ export default function HomeScreen() {
                 style={homeStyles.drawerItem}
                 onPress={() => {
                   setDrawerOpen(false);
-                  Linking.openURL('https://buildonbudget.hustlerati.com');
+                  Alert.alert(
+                    'Account Management',
+                    'You are about to be directed to the web version of BuildOnBudget. You can log in using the same credentials you use in the app.',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      {
+                        text: 'Continue',
+                        onPress: () => Linking.openURL('https://buildonbudget.hustlerati.com/login'),
+                      },
+                    ]
+                  );
                 }}
               >
                 <View style={homeStyles.drawerIcon}>
-                  <Text style={homeStyles.drawerIconText}>WA</Text>
+                  <Ionicons name="person-circle" size={18} color={colors.icon} />
                 </View>
-                <Text style={homeStyles.drawerItemText}>Visit Web App</Text>
+                <Text style={homeStyles.drawerItemText}>Account Management</Text>
               </Pressable>
             </View>
           </View>
