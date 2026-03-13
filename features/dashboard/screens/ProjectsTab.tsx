@@ -4,10 +4,9 @@ import { useTheme } from '@/context/theme';
 import { ActivityIndicator, Linking, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
 
 import { useDashboardStyles } from '@/features/dashboard/styles/dashboardStyles';
-import { apiFetch } from '@/services/api';
+import { apiFetch, getApiUrl, getAuthToken } from '@/services/api';
 
 export default function ProjectsTab() {
   const dashboardStyles = useDashboardStyles();
@@ -45,7 +44,7 @@ export default function ProjectsTab() {
   const [safety, setSafety] = useState('');
   const [attachmentName, setAttachmentName] = useState<string | null>(null);
   const [attachmentType, setAttachmentType] = useState<string | null>(null);
-  const [attachmentBase64, setAttachmentBase64] = useState<string | null>(null);
+  const [attachmentUri, setAttachmentUri] = useState<string | null>(null);
   const [attachmentSize, setAttachmentSize] = useState<number | null>(null);
 
   const projectTypes = [
@@ -112,7 +111,7 @@ export default function ProjectsTab() {
     setSafety('');
     setAttachmentName(null);
     setAttachmentType(null);
-    setAttachmentBase64(null);
+    setAttachmentUri(null);
     setAttachmentSize(null);
   };
 
@@ -129,13 +128,9 @@ export default function ProjectsTab() {
       const asset = result.assets?.[0];
       if (!asset?.uri) return;
 
-      const base64 = await FileSystem.readAsStringAsync(asset.uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
       setAttachmentName(asset.name ?? 'attachment.pdf');
       setAttachmentType(asset.mimeType ?? 'application/pdf');
-      setAttachmentBase64(base64);
+      setAttachmentUri(asset.uri);
       setAttachmentSize(typeof asset.size === 'number' ? asset.size : null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to read attachment');
@@ -147,35 +142,49 @@ export default function ProjectsTab() {
       setError('Please fill in all required fields.');
       return;
     }
-    if (attachmentName && !attachmentBase64) {
-      setError('The PDF could not be loaded. Please re-select the file.');
-      return;
-    }
     setSubmitting(true);
     try {
-      const payload = {
-        name: name.trim(),
-        type,
-        client_name: clientName.trim() || null,
-        client_contact: clientContact.trim() || null,
-        location: location.trim(),
-        description: description.trim() || null,
-        budget: budget.trim(),
-        start_date: startDate.trim(),
-        end_date: endDate.trim() || null,
-        materials: materials.trim() || null,
-        contractors: contractors.trim() || null,
-        permits: permits.trim() || null,
-        safety: safety.trim() || null,
-        attachment_name: attachmentName,
-        attachment_type: attachmentType,
-        attachment_base64: attachmentBase64,
-      };
+      const form = new FormData();
+      form.append('name', name.trim());
+      form.append('type', type);
+      form.append('client_name', clientName.trim());
+      form.append('client_contact', clientContact.trim());
+      form.append('location', location.trim());
+      form.append('description', description.trim());
+      form.append('budget', budget.trim());
+      form.append('start_date', startDate.trim());
+      form.append('end_date', endDate.trim());
+      form.append('materials', materials.trim());
+      form.append('contractors', contractors.trim());
+      form.append('permits', permits.trim());
+      form.append('safety', safety.trim());
 
-      const response = await apiFetch<{ message?: string }>('/new-project', {
+      if (attachmentUri && attachmentName) {
+        form.append('attachment', {
+          uri: attachmentUri,
+          name: attachmentName,
+          type: attachmentType ?? 'application/pdf',
+        } as unknown as Blob);
+      }
+
+      const url = `${getApiUrl()}/new-project`;
+      const headers: Record<string, string> = {};
+      const token = getAuthToken();
+      if (token) headers.Authorization = `Bearer ${token}`;
+
+      const responseRaw = await fetch(url, {
         method: 'POST',
-        body: JSON.stringify(payload),
+        headers,
+        body: form,
       });
+
+      if (!responseRaw.ok) {
+        const errorPayload = await responseRaw.json().catch(() => ({}));
+        const message = (errorPayload && (errorPayload.error || errorPayload.message)) || 'Failed to create project';
+        throw new Error(message);
+      }
+
+      const response = await responseRaw.json().catch(() => ({}));
 
       setNotice(response.message || 'Project created successfully.');
       setError(null);

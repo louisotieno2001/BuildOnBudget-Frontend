@@ -15,7 +15,7 @@
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyB_rDgHSttGbYEfmhA2OtNTVOTWM7LqfvM"
+          "apiKey": ""
         }
       },
       "permissions": [
@@ -61,7 +61,7 @@
       "reactCompiler": true
     },
     "extra": {
-      "apiUrl": "http://10.57.99.28:3000",
+      "apiUrl": "https://www.buildonbudget.hustlerati.com",
       "eas": {
         "projectId": "d9c8b1e7-5a3b-4c8e-9f0a-2b1c3d4e5f6a"
       }
