@@ -18,6 +18,7 @@ export default ({ config }: { config: Record<string, any> }) => {
       ios: {
         ...base.ios,
         googleMapsApiKey,
+        bundleIdentifier: 'com.buildonbudget.hustlerati.com',
       },
       android: {
         ...base.android,
