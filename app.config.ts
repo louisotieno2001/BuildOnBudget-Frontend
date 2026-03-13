@@ -1,5 +1,9 @@
 import appJson from './app.json';
 
+const apiUrl =
+  process.env.EXPO_PUBLIC_BOB_API_URL ||
+  process.env.BOB_API_URL;
+
 const googleMapsApiKey =
   process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY ||
   process.env.GOOGLE_MAPS_API_KEY ||
@@ -30,6 +34,7 @@ export default ({ config }: { config: Record<string, any> }) => {
       extra: {
         ...base.extra,
         googleMapsApiKey,
+        apiUrl,
       },
     },
   };
