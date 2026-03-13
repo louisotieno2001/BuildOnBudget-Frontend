@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/context/theme';
 
@@ -17,7 +18,7 @@ type ThemeColors = {
   dangerText: string;
 };
 
-export const createDashboardStyles = (colors: ThemeColors) =>
+export const createDashboardStyles = (colors: ThemeColors, topInset = 0) =>
   StyleSheet.create({
     screen: {
       flex: 1,
@@ -25,7 +26,7 @@ export const createDashboardStyles = (colors: ThemeColors) =>
     },
   container: {
     paddingHorizontal: 20,
-    paddingTop: 24,
+    paddingTop: 24 + topInset,
     paddingBottom: 32,
   },
   title: {
@@ -656,5 +657,6 @@ export const createDashboardStyles = (colors: ThemeColors) =>
 
 export function useDashboardStyles() {
   const { colors } = useTheme();
-  return useMemo(() => createDashboardStyles(colors), [colors]);
+  const insets = useSafeAreaInsets();
+  return useMemo(() => createDashboardStyles(colors, insets.top), [colors, insets.top]);
 }

@@ -1,11 +1,13 @@
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/context/theme';
 
 export default function DashboardTabsLayout() {
   const { isDark, colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -15,8 +17,8 @@ export default function DashboardTabsLayout() {
           tabBarStyle: {
             backgroundColor: colors.background,
             borderTopColor: colors.border,
-            height: 62,
-            paddingBottom: 8,
+            height: 62 + insets.bottom,
+            paddingBottom: 8 + insets.bottom,
             paddingTop: 8,
             marginBottom: 0,
           },

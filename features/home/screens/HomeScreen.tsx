@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Alert, Linking, Pressable, ScrollView, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '@/context/theme';
 import { createHomeStyles } from '@/features/home/styles/homeStyles';
@@ -10,6 +11,7 @@ export default function HomeScreen() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { colors } = useTheme();
   const homeStyles = useMemo(() => createHomeStyles(colors), [colors]);
+  const insets = useSafeAreaInsets();
 
   return (
     <View style={homeStyles.screen}>
@@ -78,7 +80,7 @@ export default function HomeScreen() {
       )}
 
       <ScrollView contentContainerStyle={{ paddingBottom: 0 }}>
-        <View style={homeStyles.header}>
+        <View style={[homeStyles.header, { paddingTop: 18 + insets.top }]}>
           <Pressable style={homeStyles.menuButton} onPress={() => setDrawerOpen(true)}>
             <Text style={homeStyles.menuButtonText}>☰</Text>
           </Pressable>
